@@ -65,7 +65,7 @@ export const firebaseAdminGetUserByEmail = (email: string) => {
 export const firebaseAdminGetSessions = async () => {
   const ref = db.collection('sessions');
   const snapshot = await ref.get();
-  return snapshot.docs.map((doc) => doc.data());
+  return snapshot.docs.map((doc) => ({ ...doc.data(), uid: doc.id }));
 };
 
 export const firebaseAdminGetUserSessions = async (userId: string) => {
@@ -79,9 +79,10 @@ export const firebaseAdminGetUserSessions = async (userId: string) => {
 };
 
 export const firebaseAdminGetMessages = async (messageTopic: string) => {
+  console
   const ref = db.collection(messageTopic);
   const snapshot = await ref
-    .where('status', '==', false)
+    // .where('status', '==', false)
     .orderBy('createdAt', 'desc')
     .limit(1)
     .get();
